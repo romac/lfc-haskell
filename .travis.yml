@@ -31,3 +31,7 @@ script:
 # Build the package, its tests, and its docs and run the tests
 - stack --no-terminal build
 
+notifications:
+  slack:
+    secure: fzDEy4SjCatJCbdjqSLTpOb1bEi7vc2zeEp1Ws144Um/cCfMCWMfW0sjRO1v4T2mdhnUxv3qyEOX/RSO5SzCUcz0P0qN+DTtj+Uj3CXT1xQEtYto/48utC2hXiYFzrTf9mawilvrnhzrMfZjfSi1/TAG5l5PM4zkLhCDLjUfitYOFx19I3ecna2GdBnn3XcEjO5Tm+VHrg2rT17hx1kEyWD/z1o7X11v6b8z9u7ivDcakkRjW7+HxDw2ylbgOsfLwZoDqdMaSmse59Fkk9PlUX460mN+Fm0QPM2UsZ5HNvBzKqL4UWUVKD2XN9Q7q98AuCKV30xgh1r5102CWhEBUIuIvm5ZyWoGdC5+Cp5DiFnBxl/d2+LzXeKY3HENEcl0RFwXYTcdpC1FSawsG1ynEyg1+WUqjUyHX3LlDS0ML6cWGfkjITiOIJ+KAp47pQSCDLHHvIxPEIDm8R82CwdK/GFzVn80+yMffVQt05LAvyE7Dw5sJ6u27TTSwAKFXw+NZ5A9k+4hMKz+niYPo3Awp1Ut6AA3bUEl6DzBajz74jXfE1t8W4IRmQt4ikafucoo1EOiuUoD+VVE/O6kvZpjZ3TND4j+/QuNw/4jTqLoIYlS6hdvBSGjJGuidovfAL55cJAFtv//kIw8UOliNLyCZ0NGp9D0ZI++hsc/xPNVzN4=
+
