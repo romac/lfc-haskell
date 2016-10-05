@@ -3,7 +3,7 @@ module Language.Lambda.Infer
   ( typeTree
   ) where
 
-import Data.Functor.Foldable (Fix(..), unfix, cata)
+import Data.Functor.Foldable (Fix(..), cata)
 
 import Language.Lambda.Annotate
 import Language.Lambda.Name
@@ -17,9 +17,10 @@ dumbTypeInf :: UntypedTree -> Ty
 dumbTypeInf = cata dumbTypeInf'
   where
     dumbTypeInf' :: TreeF Ty -> Ty
-    dumbTypeInf' (Var x)                   = tyVar (Name "a")
+    dumbTypeInf' (Var _)                   = tyVar (Name "a")
     dumbTypeInf' (Abs x bdy)               = tyFun x bdy
     dumbTypeInf' (App (Fix (TyFun a b)) x) = if a == x then b else error "a != x"
+    dumbTypeInf' (App (Fix (TyVar _)) _)   = error "cannot apply non-function"
 
 typeTree :: UntypedTree -> TypedTree
 typeTree = annotate dumbTypeInf
