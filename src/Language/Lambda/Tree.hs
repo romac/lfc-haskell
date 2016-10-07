@@ -1,5 +1,6 @@
 
 {-# LANGUAGE DeriveFunctor #-}
+{-# LANGUAGE DeriveTraversable #-}
 
 module Language.Lambda.Tree
   ( TreeF(..)
@@ -11,5 +12,5 @@ data TreeF a
   = Var Name
   | Abs a a
   | App a a
-  deriving (Eq, Show, Functor)
+  deriving (Eq, Show, Functor, Foldable, Traversable)
 
