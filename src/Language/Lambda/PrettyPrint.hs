@@ -19,8 +19,9 @@ pprintTy :: Ty -> String
 pprintTy = cata pprintTy'
 
 pprintTy' :: TyF String -> String
-pprintTy' (TyVar (Name a)) = a
-pprintTy' (TyFun a b)      = a ++ " -> " ++ b
+pprintTy' TyBool      = "Bool"
+pprintTy' TyNat       = "Nat"
+pprintTy' (TyFun a b) = a ++ " -> " ++ b
 
 pprintUntypedTree :: UntypedTree -> String
 pprintUntypedTree = cata pprintUntypedTree'

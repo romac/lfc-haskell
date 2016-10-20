@@ -8,23 +8,34 @@ import Data.Functor.Foldable.Ext (cataM)
 
 import Data.Functor.Identity
 
+import Control.Comonad.Cofree (Cofree(..))
+import Control.Monad.State.Lazy
+
 import Language.Lambda.Annotate
 import Language.Lambda.Name
 import Language.Lambda.Tree
-import Language.Lambda.Tree.Typed
+-- import Language.Lambda.Tree.Typed
 import Language.Lambda.Tree.Untyped
 import Language.Lambda.Ty
 
--- This is of course completely wrong, to be replaced by proper HM inference.
-dumbTypeInf :: UntypedTree -> Identity Ty
-dumbTypeInf = cataM dumbTypeInf'
-  where
-    dumbTypeInf' :: TreeF Ty -> Identity Ty
-    dumbTypeInf' (Var _)                   = return $ tyVar (Name "a")
-    dumbTypeInf' (Abs x bdy)               = return $ tyFun x bdy
-    dumbTypeInf' (App (Fix (TyFun a b)) x) = return $ if a == x then b else error "a != x"
-    dumbTypeInf' (App (Fix (TyVar _)) _)   = error "cannot apply non-function"
+type Context = [(Name, Ty)]
 
-typeTree :: UntypedTree -> Identity TypedTree
-typeTree = annotateM dumbTypeInf
+type Infer = State Context
+
+type TypedTree = Cofree TreeF (Maybe Ty)
+
+typeTree' :: TreeF (Maybe Ty) -> Infer (Maybe Ty)
+typeTree' (Var n)           = gets (lookup n)
+typeTree' Zero              = return (Just tyNat)
+typeTree' (Succ (Just _))   = return (Just tyNat)
+typeTree' (Pred (Just _))   = return (Just tyNat)
+typeTree' (IsZero (Just _)) = return (Just tyBool)
+typeTree' Tru               = return (Just tyBool)
+typeTree' Fals              = return (Just tyBool)
+
+typeTree' (If (Just _) (Just tyThen) (Just tyEls)) | tyThen == tyEls =
+  return (Just tyThen)
+
+typeTree :: UntypedTree -> Infer TypedTree
+typeTree = annotateM (cataM typeTree')
 

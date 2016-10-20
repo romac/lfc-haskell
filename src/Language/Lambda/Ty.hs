@@ -6,7 +6,8 @@
 module Language.Lambda.Ty
   ( Ty
   , TyF(..)
-  , tyVar
+  , tyBool
+  , tyNat
   , tyFun
   ) where
 
@@ -16,19 +17,24 @@ import Data.Functor.Foldable (Fix(..))
 import Language.Lambda.Name
 
 data TyF a
-  = TyVar Name
+  = TyBool
+  | TyNat
   | TyFun a a
   deriving (Eq, Show, Functor)
 
 instance Eq1 TyF where
-  liftEq _  (TyVar x)   (TyVar y)     = x == y
+  liftEq _  TyBool TyBool             = True
+  liftEq _  TyNat  TyNat              = True
   liftEq eq (TyFun x y) (TyFun x' y') = eq x x' && eq y y'
   liftEq _  _           _             = False
 
 type Ty = Fix TyF
 
-tyVar :: Name -> Ty
-tyVar = Fix . TyVar
+tyBool :: Ty
+tyBool = Fix TyBool
+
+tyNat :: Ty
+tyNat = Fix TyNat
 
 tyFun :: Ty -> Ty -> Ty
 tyFun a b = Fix (TyFun a b)
