@@ -27,9 +27,9 @@ pprintUntypedTree :: UntypedTree -> String
 pprintUntypedTree = cata pprintUntypedTree'
 
 pprintUntypedTree' :: TreeF String -> String
-pprintUntypedTree' (Var (Name x)) = x
-pprintUntypedTree' (Abs x body)   = "λ" ++ x ++ ". " ++ body
-pprintUntypedTree' (App f x)      = f ++ " " ++ x
+pprintUntypedTree' (Var (Name x))      = x
+pprintUntypedTree' (Abs (Name x) ty body) = "λ" ++ x ++ ": " ++ pprintTy ty ++ ". " ++ body
+pprintUntypedTree' (App f x)           = f ++ " " ++ x
 
 -- There must be a cleaner way to do that
 pprintTypedTree :: TypedTree -> String

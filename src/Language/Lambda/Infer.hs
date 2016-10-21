@@ -36,6 +36,13 @@ typeTree' Fals              = return (Just tyBool)
 typeTree' (If (Just _) (Just tyThen) (Just tyEls)) | tyThen == tyEls =
   return (Just tyThen)
 
-typeTree :: UntypedTree -> Infer TypedTree
-typeTree = annotateM (cataM typeTree')
+typeTree' (App (Just (Fix (TyFun a b))) (Just c)) | a == c =
+  return (Just b)
+
+typeTree' (Abs x ty1 ~(Just ty2)) = do
+  modify (\ctx -> (x, ty1) : ctx)
+  return (Just (tyFun ty1 ty2))
+
+typeTree :: UntypedTree -> TypedTree
+typeTree tree = evalState (annotateM (cataM typeTree') tree) []
 

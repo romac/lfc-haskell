@@ -17,8 +17,8 @@ type TypedTree = Cofree TreeF Ty
 typedVar :: Ty -> Name -> TypedTree
 typedVar ty name = ty :< Var name
 
-typedAbs :: Ty -> TypedTree -> TypedTree -> TypedTree
-typedAbs ty x e = ty :< Abs x e
+typedAbs :: Ty -> Name -> Ty -> TypedTree -> TypedTree
+typedAbs ty x t e = ty :< Abs x t e
 
 typedApp :: Ty -> TypedTree -> TypedTree -> TypedTree
 typedApp ty f x = ty :< App f x

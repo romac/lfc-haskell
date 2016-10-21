@@ -10,14 +10,15 @@ import Data.Functor.Foldable (Fix(..))
 
 import Language.Lambda.Name
 import Language.Lambda.Tree
+import Language.Lambda.Ty
 
 type UntypedTree = Fix TreeF
 
 untypedVar :: Name -> UntypedTree
 untypedVar = Fix . Var
 
-untypedAbs :: UntypedTree -> UntypedTree -> UntypedTree
-untypedAbs x e = Fix (Abs x e)
+untypedAbs :: Name -> Ty -> UntypedTree -> UntypedTree
+untypedAbs x t e = Fix (Abs x t e)
 
 untypedApp :: UntypedTree -> UntypedTree -> UntypedTree
 untypedApp f x = Fix (App f x)

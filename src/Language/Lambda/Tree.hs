@@ -1,12 +1,14 @@
 
 {-# LANGUAGE DeriveFunctor #-}
 {-# LANGUAGE DeriveTraversable #-}
+{-# LANGUAGE StandaloneDeriving #-}
 
 module Language.Lambda.Tree
   ( TreeF(..)
   ) where
 
 import Language.Lambda.Name
+import Language.Lambda.Ty
 
 data TreeF a
   = Var Name
@@ -17,7 +19,8 @@ data TreeF a
   | Tru
   | Fals
   | If a a a
-  | Abs a a
+  | Abs Name Ty a
   | App a a
-  deriving (Eq, Show, Functor, Foldable, Traversable)
+  deriving (Eq, Functor, Foldable, Traversable)
 
+-- deriving instance Show a => Show (TreeF a)
