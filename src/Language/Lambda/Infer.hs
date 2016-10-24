@@ -11,7 +11,7 @@ import Data.Functor.Foldable.Ext (cataM)
 import Data.Functor.Identity
 
 import Control.Comonad.Cofree (Cofree(..))
-import Control.Monad.State.Lazy
+import Control.Monad.Reader
 
 import Language.Lambda.Annotate
 import Language.Lambda.Name
@@ -22,11 +22,11 @@ import Language.Lambda.Ty
 
 type Context = [(Name, Ty)]
 
-type Infer = StateT Context Maybe
+type Infer = ReaderT Context Maybe
 
 typeTree' :: TreeF (Infer Ty) -> Infer Ty
 typeTree' (Var n) = do
-  x <- gets (lookup n)
+  x <- asks (lookup n)
   guard (isJust x)
   return (fromJust x)
 
@@ -64,11 +64,10 @@ typeTree' (App tyFun tyArg) = do
   guard (a == c)
   return b
 
-typeTree' (Abs x a ty2) = do
-  modify (\ctx -> (x, a) : ctx)
-  b <- ty2
+typeTree' (Abs x a tyBody) = do
+  b <- local (\ctx -> (x, a) : ctx) tyBody
   return (tyFun a b)
 
 typeTree :: UntypedTree -> Maybe TypedTree
-typeTree tree = evalStateT (annotateA typeTree' tree) []
+typeTree tree = runReaderT (annotateA typeTree' tree) []
 
