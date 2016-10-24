@@ -2,6 +2,7 @@
 module Language.Lambda.Annotate
   ( annotate
   , annotateM
+  , annotateA
   ) where
 
 import Data.Functor.Foldable (Fix, unfix, cata)
@@ -15,4 +16,7 @@ annotateM f x = do
   ann  <- f x
   sub  <- traverse (annotateM f) (unfix x)
   return (ann :< sub)
+
+annotateA :: (Traversable f, Monad m) => (f (m a) -> m a) -> Fix f-> m (Cofree f a)
+annotateA f x = sequence (annotate (cata f) x)
 
