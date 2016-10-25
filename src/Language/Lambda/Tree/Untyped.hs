@@ -6,20 +6,20 @@ module Language.Lambda.Tree.Untyped
   , untypedApp
   ) where
 
-import Data.Functor.Foldable (Fix(..))
+import Data.Functor.Foldable (Mu(..), embed)
 
 import Language.Lambda.Name
 import Language.Lambda.Tree
 import Language.Lambda.Ty
 
-type UntypedTree = Fix TreeF
+type UntypedTree = Mu TreeF
 
 untypedVar :: Name -> UntypedTree
-untypedVar = Fix . Var
+untypedVar = embed . Var
 
 untypedAbs :: Name -> Ty -> UntypedTree -> UntypedTree
-untypedAbs x t e = Fix (Abs x t e)
+untypedAbs x t e = embed (Abs x t e)
 
 untypedApp :: UntypedTree -> UntypedTree -> UntypedTree
-untypedApp f x = Fix (App f x)
+untypedApp f x = embed (App f x)
 

@@ -1,10 +1,11 @@
+{-# LANGUAGE FlexibleContexts #-}
 
 module Data.Functor.Foldable.Ext
   ( cataM
   ) where
 
-import Data.Functor.Foldable (Fix, unfix)
+import Data.Functor.Foldable (Base, Recursive, project)
 
-cataM :: (Applicative m, Monad m, Traversable f) => (f a -> m a) -> Fix f -> m a
-cataM f x = f =<< traverse (cataM f) (unfix x)
+cataM :: (Recursive t, Monad m, Traversable (Base t)) => (Base t a -> m a) -> t -> m a
+cataM f x = f =<< traverse (cataM f) (project x)
 

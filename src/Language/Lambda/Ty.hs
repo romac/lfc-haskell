@@ -12,7 +12,7 @@ module Language.Lambda.Ty
   ) where
 
 import Data.Functor.Classes  (Eq1(..))
-import Data.Functor.Foldable (Fix(..))
+import Data.Functor.Foldable (Mu(..), embed)
 
 import Language.Lambda.Name
 
@@ -28,14 +28,14 @@ instance Eq1 TyF where
   liftEq eq (TyFun x y) (TyFun x' y') = eq x x' && eq y y'
   liftEq _  _           _             = False
 
-type Ty = Fix TyF
+type Ty = Mu TyF
 
 tyBool :: Ty
-tyBool = Fix TyBool
+tyBool = embed TyBool
 
 tyNat :: Ty
-tyNat = Fix TyNat
+tyNat = embed TyNat
 
 tyFun :: Ty -> Ty -> Ty
-tyFun a b = Fix (TyFun a b)
+tyFun a b = embed (TyFun a b)
 

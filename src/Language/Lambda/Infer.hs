@@ -5,7 +5,7 @@ module Language.Lambda.Infer
 
 import Data.Maybe (isJust, fromJust)
 
-import Data.Functor.Foldable     (Fix(..), cata, unfix)
+import Data.Functor.Foldable     (cata, project)
 import Data.Functor.Foldable.Ext (cataM)
 
 import Data.Functor.Identity
@@ -59,7 +59,7 @@ typeTree' (If tyCond tyThen tyEls) = do
   tyThen
 
 typeTree' (App tyFun tyArg) = do
-  Fix (TyFun a b) <- tyFun
+  TyFun a b <- project <$> tyFun
   c <- tyArg
   guard (a == c)
   return b
