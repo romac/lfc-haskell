@@ -1,22 +1,22 @@
+{-# LANGUAGE FlexibleContexts #-}
 
 module Language.Lambda.Annotate
   ( annotate
   , annotateM
-  , annotateA
   ) where
 
-import Data.Functor.Foldable (Fix, unfix, cata)
+import Data.Functor.Foldable (Base, Recursive, project, cata)
 import Control.Comonad.Cofree (Cofree(..))
 
-annotate :: Functor f => (Fix f -> a) -> Fix f -> Cofree f a
-annotate f x = f x :< fmap (annotate f) (unfix x)
+annotate :: (Recursive t, Functor (Base t)) => (t -> a) -> t -> Cofree (Base t) a
+annotate f x = f x :< fmap (annotate f) (project x)
 
-annotateM :: (Monad m, Functor f, Traversable f) => (Fix f -> m a) -> Fix f -> m (Cofree f a)
-annotateM f x = do
-  ann  <- f x
-  sub  <- traverse (annotateM f) (unfix x)
-  return (ann :< sub)
+-- annotateM :: (Recursive t, Monad m, Functor (Base t), Traversable (Base t)) => (t -> m a) -> t -> m (Cofree (Base t) a)
+-- annotateM f x = do
+--   ann  <- f x
+--   sub  <- traverse (annotateM f) (project x)
+--   return (ann :< sub)
 
-annotateA :: (Traversable f, Monad m) => (f (m a) -> m a) -> Fix f-> m (Cofree f a)
-annotateA f x = sequence (annotate (cata f) x)
+annotateM :: (Recursive t, Monad m, Traversable (Base t)) => (Base t (m a) -> m a) -> t -> m (Cofree (Base t) a)
+annotateM f x = sequence (annotate (cata f) x)
 

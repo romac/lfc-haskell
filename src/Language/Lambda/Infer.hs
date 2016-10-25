@@ -69,5 +69,5 @@ typeTree' (Abs x a tyBody) = do
   return (tyFun a b)
 
 typeTree :: UntypedTree -> Maybe TypedTree
-typeTree tree = runReaderT (annotateA typeTree' tree) []
+typeTree tree = runReaderT (annotateM typeTree' tree) []
 
