@@ -4,6 +4,7 @@ module Language.Lambda.Tree.Typed
   , typedVar
   , typedAbs
   , typedApp
+  , getType
   ) where
 
 import Control.Comonad.Cofree (Cofree(..))
@@ -23,3 +24,5 @@ typedAbs ty x t e = ty :< Abs x t e
 typedApp :: Ty -> TypedTree -> TypedTree -> TypedTree
 typedApp ty f x = ty :< App f x
 
+getType :: TypedTree -> Ty
+getType (ty :< _) = ty
