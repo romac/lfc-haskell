@@ -1,13 +1,16 @@
 
--- Worst pretty printer ever
+{-# LANGUAGE OverloadedStrings #-}
+
 module Language.Lambda.PrettyPrint
-  ( pprintUntypedTree
-  , pprintTypedTree
-  , pprintTy
+  ( ppUntypedTree
+  , ppTypedTree
+  , ppTy
   ) where
 
-import Control.Comonad.Cofree (Cofree(..))
+import Control.Comonad.Trans.Cofree
 import Data.Functor.Foldable (cata)
+
+import Text.PrettyPrint.ANSI.Leijen hiding ((<$>))
 
 import Language.Lambda.Name
 import Language.Lambda.Tree
@@ -15,23 +18,32 @@ import Language.Lambda.Tree.Untyped
 import Language.Lambda.Tree.Typed
 import Language.Lambda.Ty
 
-pprintTy :: Ty -> String
-pprintTy = cata pprintTy'
+ppTy :: Ty -> Doc
+ppTy = cata ppTy'
 
-pprintTy' :: TyF String -> String
-pprintTy' TyBool      = "Bool"
-pprintTy' TyNat       = "Nat"
-pprintTy' (TyFun a b) = a ++ " -> " ++ b
+ppTy' :: TyF Doc -> Doc
+ppTy' TyBool      = "Bool"
+ppTy' TyNat       = "Nat"
+ppTy' (TyFun a b) = a <+> "->" <+> b
 
-pprintUntypedTree :: UntypedTree -> String
-pprintUntypedTree = cata pprintUntypedTree'
+ppUntypedTree :: UntypedTree -> Doc
+ppUntypedTree = cata ppUntypedTree'
 
-pprintUntypedTree' :: TreeF String -> String
-pprintUntypedTree' (Var (Name x))      = x
-pprintUntypedTree' (Abs (Name x) ty body) = "λ" ++ x ++ ": " ++ pprintTy ty ++ ". " ++ body
-pprintUntypedTree' (App f x)           = f ++ " " ++ x
+ppUntypedTree' :: TreeF Doc -> Doc
+ppUntypedTree' Zero                   = text "0"
+ppUntypedTree' (Succ t)               = text "succ" <+> t
+ppUntypedTree' (Pred t)               = text "pred" <+> t
+ppUntypedTree' (IsZero t)             = text "iszero" <+> t
+ppUntypedTree' Tru                    = text "True"
+ppUntypedTree' Fals                   = text "False"
+ppUntypedTree' (If c t e)             = text "if" <+> c <+> "then" <+> t <+> "else" <+> e
+ppUntypedTree' (Var (Name x))         = text x
+ppUntypedTree' (Abs (Name x) ty body) = "λ" <> text x <> ":" <+> ppTy ty <> "." <+> body
+ppUntypedTree' (App f x)              = f <+> x
 
--- There must be a cleaner way to do that
-pprintTypedTree :: TypedTree -> String
-pprintTypedTree (ty :< tree) = "(" ++ pprintUntypedTree' (pprintTypedTree <$> tree) ++ ": " ++ pprintTy ty ++ ")"
+ppTypedTree :: TypedTree -> Doc
+ppTypedTree = cata ppTypedTree'
+
+ppTypedTree' :: CofreeF TreeF Ty Doc -> Doc
+ppTypedTree' (ty :< tree) = ppUntypedTree' tree <> ":" <+> ppTy ty
 

@@ -10,11 +10,11 @@ license: BSD3
 github: romac/lambda
 
 dependencies:
+  - ansi-wl-pprint 
   - base >=4.7 && <5
   - free
   - mtl
   - recursion-schemes
-  - prelude-extras
 
 library:
   source-dirs: src

@@ -23,4 +23,3 @@ data TreeF a
   | App a a
   deriving (Eq, Functor, Foldable, Traversable)
 
--- deriving instance Show a => Show (TreeF a)

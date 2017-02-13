@@ -5,7 +5,7 @@ packages:
   - '.'
 
 extra-deps:
-  - recursion-schemes-5
+  - recursion-schemes-5.0.1
 
 flags: {}
 

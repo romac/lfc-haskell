@@ -26,3 +26,4 @@ typedApp ty f x = ty :< App f x
 
 getType :: TypedTree -> Ty
 getType (ty :< _) = ty
+
