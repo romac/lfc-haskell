@@ -1,9 +1,13 @@
+-- This file has been generated from package.yaml by hpack version 0.14.0.
+--
+-- see: https://github.com/sol/hpack
 
 name:                lambda
 version:             0.1.0.0
-synopsis:            Just me messing around with recursion schemes and Cofree.
+synopsis:            Just messing around with recursion schemes and Cofree.
 description:         Please see README.md
 homepage:            https://github.com/romac/lambda#readme
+bug-reports:         https://github.com/romac/lambda/issues
 license:             BSD3
 license-file:        LICENSE
 author:              Romain Ruetschi
@@ -11,29 +15,29 @@ maintainer:          romain.ruetschi@gmail.com
 copyright:           2016 Romain Ruetschi
 category:            Development
 build-type:          Simple
-cabal-version:       >=1.10
-
-library
-  hs-source-dirs:      src
-
-  build-depends:       base >= 4.7 && < 5
-                     , free
-                     , mtl
-                     , recursion-schemes
-
-  exposed-modules:     Language.Lambda.Annotate
-                     , Language.Lambda.Infer
-                     , Language.Lambda.Name
-                     , Language.Lambda.PrettyPrint
-                     , Language.Lambda.Tree
-                     , Language.Lambda.Tree.Typed
-                     , Language.Lambda.Tree.Untyped
-                     , Language.Lambda.Ty
-                     , Data.Functor.Foldable.Ext
-
-  default-language:    Haskell2010
+cabal-version:       >= 1.10
 
 source-repository head
-  type:     git
+  type: git
   location: https://github.com/romac/lambda
 
+library
+  hs-source-dirs:
+      src
+  build-depends:
+      base >=4.7 && <5
+    , free
+    , mtl
+    , recursion-schemes
+    , prelude-extras
+  exposed-modules:
+      Data.Functor.Foldable.Ext
+      Language.Lambda.Annotate
+      Language.Lambda.Infer
+      Language.Lambda.Name
+      Language.Lambda.PrettyPrint
+      Language.Lambda.Tree
+      Language.Lambda.Tree.Typed
+      Language.Lambda.Tree.Untyped
+      Language.Lambda.Ty
+  default-language: Haskell2010

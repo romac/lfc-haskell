@@ -1,0 +1,21 @@
+name: lambda
+version: '0.1.0.0'
+synopsis: Just messing around with recursion schemes and Cofree.
+description: Please see README.md
+category: Development
+author: Romain Ruetschi
+maintainer: romain.ruetschi@gmail.com
+copyright: 2016 Romain Ruetschi
+license: BSD3
+github: romac/lambda
+
+dependencies:
+  - base >=4.7 && <5
+  - free
+  - mtl
+  - recursion-schemes
+  - prelude-extras
+
+library:
+  source-dirs: src
+
