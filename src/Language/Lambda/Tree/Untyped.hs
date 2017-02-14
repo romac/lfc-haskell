@@ -1,10 +1,19 @@
 
 module Language.Lambda.Tree.Untyped
   ( UntypedTree
-  , untypedVar
-  , untypedAbs
-  , untypedApp
+  , mkVar
+  , mkAbs
+  , mkApp
+  , mkTrue
+  , mkFalse
+  , mkSucc
+  , mkPred
+  , mkZero
+  , mkIsZero
+  , mkIf
   ) where
+
+import Protolude
 
 import Data.Functor.Foldable (Mu(..), embed)
 
@@ -14,12 +23,33 @@ import Language.Lambda.Ty
 
 type UntypedTree = Mu TreeF
 
-untypedVar :: Name -> UntypedTree
-untypedVar = embed . Var
+mkVar :: Name -> UntypedTree
+mkVar = embed . Var
 
-untypedAbs :: Name -> Ty -> UntypedTree -> UntypedTree
-untypedAbs x t e = embed (Abs x t e)
+mkZero :: UntypedTree
+mkZero = embed Zero
 
-untypedApp :: UntypedTree -> UntypedTree -> UntypedTree
-untypedApp f x = embed (App f x)
+mkTrue :: UntypedTree
+mkTrue = embed Tru
+
+mkFalse :: UntypedTree
+mkFalse = embed Fals
+
+mkSucc :: UntypedTree -> UntypedTree
+mkSucc = embed . Succ
+
+mkPred :: UntypedTree -> UntypedTree
+mkPred = embed . Pred
+
+mkIsZero :: UntypedTree -> UntypedTree
+mkIsZero = embed . IsZero
+
+mkAbs :: Name -> Ty -> UntypedTree -> UntypedTree
+mkAbs x t e = embed (Abs x t e)
+
+mkApp :: UntypedTree -> UntypedTree -> UntypedTree
+mkApp f x = embed (App f x)
+
+mkIf :: UntypedTree -> UntypedTree -> UntypedTree -> UntypedTree
+mkIf c t e = embed (If c t e)
 

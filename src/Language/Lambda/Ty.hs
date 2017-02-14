@@ -1,7 +1,7 @@
 
 {-# LANGUAGE DeriveFunctor #-}
-{-# LANGUAGE DeriveAnyClass #-}
-{-# LANGUAGE StandaloneDeriving #-}
+{-# LANGUAGE DeriveTraversable #-}
+{-# LANGUAGE TemplateHaskell #-}
 
 module Language.Lambda.Ty
   ( Ty
@@ -9,26 +9,37 @@ module Language.Lambda.Ty
   , tyBool
   , tyNat
   , tyFun
+  , tyVar
+  , tyFtv
+  , tyOccurs
   ) where
 
-import Data.Functor.Classes  (Eq1(..))
-import Data.Functor.Foldable (Mu(..), embed)
+import           Protolude
 
-import Language.Lambda.Name
+import           Data.Deriving
+
+import qualified Data.Set as Set
+
+import           Data.Functor.Foldable (Mu(..), embed, cata)
+
+import           Language.Lambda.Name
 
 data TyF a
   = TyBool
   | TyNat
   | TyFun a a
-  deriving (Eq, Show, Functor)
+  | TyVar Name
+  deriving (Eq, Ord, Show, Read, Functor, Foldable, Traversable)
 
-instance Eq1 TyF where
-  liftEq _  TyBool TyBool             = True
-  liftEq _  TyNat  TyNat              = True
-  liftEq eq (TyFun x y) (TyFun x' y') = eq x x' && eq y y'
-  liftEq _  _           _             = False
+$(deriveEq1   ''TyF)
+$(deriveOrd1  ''TyF)
+$(deriveShow1 ''TyF)
+$(deriveRead1 ''TyF)
 
 type Ty = Mu TyF
+
+tyVar :: Name -> Ty
+tyVar = embed . TyVar
 
 tyBool :: Ty
 tyBool = embed TyBool
@@ -38,4 +49,14 @@ tyNat = embed TyNat
 
 tyFun :: Ty -> Ty -> Ty
 tyFun a b = embed (TyFun a b)
+
+tyFtv :: Ty -> Set Name
+tyFtv = cata alg
+  where
+    alg (TyVar n)   = Set.singleton n
+    alg (TyFun a b) = a <> b
+    alg _           = Set.empty
+
+tyOccurs :: Ty -> Name -> Bool
+tyOccurs ty n = Set.member n (tyFtv ty)
 

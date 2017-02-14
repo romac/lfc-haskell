@@ -12,9 +12,17 @@ github: romac/lambda
 dependencies:
   - ansi-wl-pprint 
   - base >=4.7 && <5
+  - comonad
+  - containers
+  - deriving-compat
   - free
   - mtl
+  - protolude
   - recursion-schemes
+  - transformers
+
+default-extensions:
+  - NoImplicitPrelude
 
 library:
   source-dirs: src

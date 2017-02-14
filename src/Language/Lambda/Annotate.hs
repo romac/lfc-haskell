@@ -3,22 +3,30 @@
 module Language.Lambda.Annotate
   ( annotate
   , annotateM
+  , annotateM'
   ) where
+
+import Protolude
 
 import Data.Functor.Foldable (Base, Recursive, project, cata)
 import Control.Comonad.Cofree (Cofree(..))
+import Control.Comonad (extend)
 
-annotate :: Recursive t => (t -> a) -> t -> Cofree (Base t) a
-annotate f x = f x :< fmap (annotate f) (project x)
+annotate :: Recursive t
+         => (t -> a)
+         -> t
+         -> Cofree (Base t) a
+annotate alg t = alg t :< fmap (annotate alg) (project t)
 
--- FIXME: Rewrite annotateM without delegating to annotate
---        as the current version walks the whole structure twice per node
-annotateM :: (Recursive t, Monad m, Traversable (Base t)) => (Base t (m a) -> m a) -> t -> m (Cofree (Base t) a)
+annotateM :: (Recursive t, Monad m, Traversable (Base t))
+          => (Base t (m a) -> m a)
+          -> t
+          -> m (Cofree (Base t) a)
 annotateM f x = sequence (annotate (cata f) x)
 
--- annotateM :: (Recursive t, Monad m, Traversable (Base t)) => (t -> m a) -> t -> m (Cofree (Base t) a)
--- annotateM f x = do
---   ann  <- f x
---   sub  <- traverse (annotateM f) (project x)
---   return (ann :< sub)
+annotateM' :: (Recursive t, Traversable (Base t), Monad m)
+           => (Cofree (Base t) () -> m a)
+           -> t
+           -> m (Cofree (Base t) a)
+annotateM' f x = sequence (extend f (annotate (const ()) x))
 

@@ -24,20 +24,32 @@ source-repository head
 library
   hs-source-dirs:
       src
+  default-extensions: NoImplicitPrelude
   build-depends:
       ansi-wl-pprint
     , base >=4.7 && <5
+    , comonad
+    , containers
+    , deriving-compat
     , free
     , mtl
+    , protolude
     , recursion-schemes
+    , transformers
   exposed-modules:
       Data.Functor.Foldable.Ext
       Language.Lambda.Annotate
+      Language.Lambda.Error
+      Language.Lambda.Example
+      Language.Lambda.Fresh
       Language.Lambda.Infer
+      Language.Lambda.Memoize
       Language.Lambda.Name
       Language.Lambda.PrettyPrint
+      Language.Lambda.Subst
       Language.Lambda.Tree
       Language.Lambda.Tree.Typed
       Language.Lambda.Tree.Untyped
       Language.Lambda.Ty
+      Language.Lambda.Unify
   default-language: Haskell2010
