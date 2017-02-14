@@ -15,7 +15,6 @@ import qualified Data.Map as Map
 import qualified Data.Set as Set
 
 import           Data.Functor.Foldable     (cata, project)
-import           Data.Functor.Foldable.Ext (cataM)
 import           Data.Functor.Identity
 
 import           Control.Comonad.Cofree (Cofree(..))

@@ -37,7 +37,6 @@ library
     , recursion-schemes
     , transformers
   exposed-modules:
-      Data.Functor.Foldable.Ext
       Language.Lambda.Annotate
       Language.Lambda.Error
       Language.Lambda.Example
