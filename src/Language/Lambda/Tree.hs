@@ -1,6 +1,8 @@
 
 {-# LANGUAGE DeriveFunctor #-}
+{-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DeriveTraversable #-}
+{-# LANGUAGE StandaloneDeriving #-}
 {-# LANGUAGE TemplateHaskell #-}
 
 module Language.Lambda.Tree
@@ -17,7 +19,7 @@ import           Language.Lambda.Name
 import           Language.Lambda.Ty
 
 data TreeF a
-  = Var Name
+  = Var !Name
   | Zero
   | Succ a
   | Pred a
@@ -25,11 +27,7 @@ data TreeF a
   | Tru
   | Fals
   | If a a a
-  | Abs Name Ty a
+  | Abs !Name !Ty a
   | App a a
-  deriving (Eq, Ord, Show, Read, Functor, Foldable, Traversable)
-
-$(deriveEq1   ''TreeF)
-$(deriveShow1 ''TreeF)
-$(deriveRead1 ''TreeF)
+  deriving (Eq, Ord, Show, Read, Functor, Foldable, Traversable, Generic, Typeable)
 

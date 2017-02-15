@@ -1,6 +1,8 @@
 
 {-# LANGUAGE DeriveFunctor #-}
+{-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DeriveTraversable #-}
+{-# LANGUAGE StandaloneDeriving #-}
 {-# LANGUAGE TemplateHaskell #-}
 
 module Language.Lambda.Ty
@@ -28,13 +30,13 @@ data TyF a
   = TyBool
   | TyNat
   | TyFun a a
-  | TyVar Name
-  deriving (Eq, Ord, Show, Read, Functor, Foldable, Traversable)
+  | TyVar !Name
+  deriving (Eq, Ord, Show, Read, Functor, Foldable, Traversable, Generic, Typeable)
 
-$(deriveEq1   ''TyF)
-$(deriveOrd1  ''TyF)
-$(deriveShow1 ''TyF)
-$(deriveRead1 ''TyF)
+$(deriveEq1     ''TyF)
+$(deriveOrd1    ''TyF)
+$(deriveShow1   ''TyF)
+$(deriveRead1   ''TyF)
 
 type Ty = Mu TyF
 
