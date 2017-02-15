@@ -89,7 +89,7 @@ inferType tree = do
 
 annotateTree :: UntypedTree -> Either TypeError (TypedTree, (Set Constraint))
 annotateTree tree =
-  let infer' = annotateM' (memoizeM infer) tree
+  let infer' = annotateM' infer tree
       except = evalRWST (runInfer infer') Map.empty Map.empty
       fresh  = runExceptT except
    in runFresh fresh
