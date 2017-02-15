@@ -1,7 +1,7 @@
 
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
-module Language.Lambda.Name
+module LFC.Name
   ( Name(..)
   ) where
 

@@ -1,6 +1,6 @@
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
-module Language.Lambda.Subst where
+module LFC.Subst where
 
 import           Protolude hiding (empty)
 
@@ -8,8 +8,8 @@ import qualified Data.Map.Strict as Map
 
 import           Data.Functor.Foldable (cata, embed)
 
-import           Language.Lambda.Name
-import           Language.Lambda.Ty
+import           LFC.Name
+import           LFC.Ty
 
 newtype Subst = Subst (Map Name Ty)
 

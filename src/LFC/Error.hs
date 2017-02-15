@@ -1,10 +1,10 @@
 
-module Language.Lambda.Error where
+module LFC.Error where
 
 import Protolude
 
-import Language.Lambda.Name
-import Language.Lambda.Ty
+import LFC.Name
+import LFC.Ty
 
 data TypeError
   = ValueNotFound Name

@@ -5,7 +5,7 @@
 {-# LANGUAGE StandaloneDeriving #-}
 {-# LANGUAGE TemplateHaskell #-}
 
-module Language.Lambda.Tree
+module LFC.Tree
   ( TreeF(..)
   ) where
 
@@ -15,8 +15,8 @@ import           Data.Deriving
 
 import           Control.Comonad.Cofree (Cofree(..))
 
-import           Language.Lambda.Name
-import           Language.Lambda.Ty
+import           LFC.Name
+import           LFC.Ty
 
 data TreeF a
   = Var !Name

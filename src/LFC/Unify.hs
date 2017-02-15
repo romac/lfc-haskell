@@ -7,7 +7,7 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
-module Language.Lambda.Unify
+module LFC.Unify
   ( solve
   , UnifyResult
   ) where
@@ -20,10 +20,10 @@ import qualified Data.Set as Set
 
 import           Data.Functor.Foldable (project, embed)
 
-import           Language.Lambda.Subst (Subst)
-import qualified Language.Lambda.Subst as Subst
-import           Language.Lambda.Error
-import           Language.Lambda.Ty
+import           LFC.Subst (Subst)
+import qualified LFC.Subst as Subst
+import           LFC.Error
+import           LFC.Ty
 
 type Constraint = (Ty, Ty)
 

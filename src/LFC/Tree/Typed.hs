@@ -1,5 +1,5 @@
 
-module Language.Lambda.Tree.Typed
+module LFC.Tree.Typed
   ( TypedTree
   , typedVar
   , typedAbs
@@ -9,9 +9,9 @@ module Language.Lambda.Tree.Typed
 
 import Control.Comonad.Cofree (Cofree(..))
 
-import Language.Lambda.Name
-import Language.Lambda.Tree
-import Language.Lambda.Ty
+import LFC.Name
+import LFC.Tree
+import LFC.Ty
 
 type TypedTree = Cofree TreeF Ty
 

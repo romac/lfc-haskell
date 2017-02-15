@@ -2,7 +2,7 @@
 {-# LANGUAGE DeriveFunctor #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
-module Language.Lambda.Fresh
+module LFC.Fresh
   ( FreshT(..)
   , Fresh
   , runFreshT
@@ -17,7 +17,7 @@ import           Control.Monad.Trans.Class
 import           Control.Monad.Writer.Strict hiding ((<>))
 import           Control.Monad.RWS.Strict hiding ((<>))
 
-import           Language.Lambda.Name
+import           LFC.Name
 
 newtype FreshT m a = FreshT (StateT [Name] m a)
   deriving (Functor, Applicative, Monad, MonadState [Name], MonadTrans)

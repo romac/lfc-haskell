@@ -5,7 +5,7 @@
 {-# LANGUAGE StandaloneDeriving #-}
 {-# LANGUAGE TemplateHaskell #-}
 
-module Language.Lambda.Ty
+module LFC.Ty
   ( Ty
   , TyF(..)
   , tyBool
@@ -24,7 +24,7 @@ import qualified Data.Set as Set
 
 import           Data.Functor.Foldable (Mu(..), embed, cata)
 
-import           Language.Lambda.Name
+import           LFC.Name
 
 data TyF a
   = TyBool

@@ -1,7 +1,7 @@
 
 {-# LANGUAGE FlexibleContexts #-}
 
-module Language.Lambda.Memoize where
+module LFC.Memoize where
 
 import           Protolude
 import qualified Data.Map as Map

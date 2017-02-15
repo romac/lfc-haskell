@@ -1,6 +1,6 @@
 {-# LANGUAGE FlexibleContexts #-}
 
-module Language.Lambda.Annotate
+module LFC.Annotate
   ( annotate
   , annotateM
   , annotateM'

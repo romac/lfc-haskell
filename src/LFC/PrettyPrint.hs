@@ -1,7 +1,7 @@
 
 {-# LANGUAGE OverloadedStrings #-}
 
-module Language.Lambda.PrettyPrint
+module LFC.PrettyPrint
   ( ppUntypedTree
   , ppTypedTree
   , ppTy
@@ -15,11 +15,11 @@ import Data.Functor.Foldable (cata)
 
 import Text.PrettyPrint.ANSI.Leijen
 
-import Language.Lambda.Name
-import Language.Lambda.Tree
-import Language.Lambda.Tree.Untyped
-import Language.Lambda.Tree.Typed
-import Language.Lambda.Ty
+import LFC.Name
+import LFC.Tree
+import LFC.Tree.Untyped
+import LFC.Tree.Typed
+import LFC.Ty
 
 ppName :: Name -> Doc
 ppName (Name n) = text n

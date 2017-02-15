@@ -1,15 +1,15 @@
 
-module Language.Lambda.Example where
+module LFC.Example where
 
 import Protolude hiding (TypeError)
 
-import Language.Lambda.Error
-import Language.Lambda.Infer
-import Language.Lambda.Name
-import Language.Lambda.PrettyPrint
-import Language.Lambda.Tree.Typed
-import Language.Lambda.Tree.Untyped
-import Language.Lambda.Ty
+import LFC.Error
+import LFC.Infer
+import LFC.Name
+import LFC.PrettyPrint
+import LFC.Tree.Typed
+import LFC.Tree.Untyped
+import LFC.Ty
 
 example1 :: UntypedTree
 example1 = let x = Name "x" in

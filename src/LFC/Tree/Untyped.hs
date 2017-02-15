@@ -1,5 +1,5 @@
 
-module Language.Lambda.Tree.Untyped
+module LFC.Tree.Untyped
   ( UntypedTree
   , mkVar
   , mkAbs
@@ -17,9 +17,9 @@ import Protolude
 
 import Data.Functor.Foldable (Mu(..), embed)
 
-import Language.Lambda.Name
-import Language.Lambda.Tree
-import Language.Lambda.Ty
+import LFC.Name
+import LFC.Tree
+import LFC.Ty
 
 type UntypedTree = Mu TreeF
 

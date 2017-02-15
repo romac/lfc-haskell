@@ -2,24 +2,24 @@
 --
 -- see: https://github.com/sol/hpack
 
-name:                lambda
+name:                lfc
 version:             0.1.0.0
-synopsis:            Just messing around with recursion schemes and Cofree.
+synopsis:            An experiment with STLC, recursion schemes and Cofree.
 description:         Please see README.md
-homepage:            https://github.com/romac/lambda#readme
-bug-reports:         https://github.com/romac/lambda/issues
+homepage:            https://github.com/romac/lfc-haskell#readme
+bug-reports:         https://github.com/romac/lfc-haskell/issues
 license:             BSD3
 license-file:        LICENSE
 author:              Romain Ruetschi
 maintainer:          romain.ruetschi@gmail.com
-copyright:           2016 Romain Ruetschi
+copyright:           2017 Romain Ruetschi
 category:            Development
 build-type:          Simple
 cabal-version:       >= 1.10
 
 source-repository head
   type: git
-  location: https://github.com/romac/lambda
+  location: https://github.com/romac/lfc-haskell
 
 library
   hs-source-dirs:
@@ -37,18 +37,18 @@ library
     , recursion-schemes
     , transformers
   exposed-modules:
-      Language.Lambda.Annotate
-      Language.Lambda.Error
-      Language.Lambda.Example
-      Language.Lambda.Fresh
-      Language.Lambda.Infer
-      Language.Lambda.Memoize
-      Language.Lambda.Name
-      Language.Lambda.PrettyPrint
-      Language.Lambda.Subst
-      Language.Lambda.Tree
-      Language.Lambda.Tree.Typed
-      Language.Lambda.Tree.Untyped
-      Language.Lambda.Ty
-      Language.Lambda.Unify
+      LFC.Annotate
+      LFC.Error
+      LFC.Example
+      LFC.Fresh
+      LFC.Infer
+      LFC.Memoize
+      LFC.Name
+      LFC.PrettyPrint
+      LFC.Subst
+      LFC.Tree
+      LFC.Tree.Typed
+      LFC.Tree.Untyped
+      LFC.Ty
+      LFC.Unify
   default-language: Haskell2010

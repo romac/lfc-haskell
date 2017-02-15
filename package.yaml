@@ -1,13 +1,13 @@
-name: lambda
+name: lfc
 version: '0.1.0.0'
-synopsis: Just messing around with recursion schemes and Cofree.
+synopsis: An experiment with STLC, recursion schemes and Cofree.
 description: Please see README.md
 category: Development
 author: Romain Ruetschi
 maintainer: romain.ruetschi@gmail.com
-copyright: 2016 Romain Ruetschi
+copyright: 2017 Romain Ruetschi
 license: BSD3
-github: romac/lambda
+github: romac/lfc-haskell
 
 dependencies:
   - ansi-wl-pprint 

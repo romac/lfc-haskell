@@ -3,7 +3,7 @@
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-module Language.Lambda.Infer
+module LFC.Infer
   ( inferType
   ) where
 
@@ -20,19 +20,19 @@ import           Data.Functor.Identity
 import           Control.Comonad.Cofree (Cofree(..))
 import           Control.Monad.RWS.Strict
 
-import           Language.Lambda.Annotate
-import           Language.Lambda.Error
-import           Language.Lambda.Fresh
-import           Language.Lambda.Memoize
-import           Language.Lambda.Name
-import           Language.Lambda.PrettyPrint
-import           Language.Lambda.Tree
-import           Language.Lambda.Tree.Typed
-import           Language.Lambda.Tree.Untyped
-import           Language.Lambda.Ty
-import           Language.Lambda.Unify
+import           LFC.Annotate
+import           LFC.Error
+import           LFC.Fresh
+import           LFC.Memoize
+import           LFC.Name
+import           LFC.PrettyPrint
+import           LFC.Tree
+import           LFC.Tree.Typed
+import           LFC.Tree.Untyped
+import           LFC.Ty
+import           LFC.Unify
 
-import qualified Language.Lambda.Subst as Subst
+import qualified LFC.Subst as Subst
 
 #define DEBUG 0
 debugM :: Monad m => Text -> m ()
