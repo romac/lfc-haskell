@@ -11,17 +11,20 @@ module LFC.Tree.Untyped
   , mkZero
   , mkIsZero
   , mkIf
+  , mkRecEmpty
+  , mkRecSelect
+  , mkRecExtend
   ) where
 
 import Protolude
 
-import Data.Functor.Foldable (Mu(..), embed)
+import Data.Functor.Foldable (Fix, embed)
 
 import LFC.Name
 import LFC.Tree
 import LFC.Ty
 
-type UntypedTree = Mu TreeF
+type UntypedTree = Fix TreeF
 
 mkVar :: Name -> UntypedTree
 mkVar = embed . Var
@@ -53,3 +56,11 @@ mkApp f x = embed (App f x)
 mkIf :: UntypedTree -> UntypedTree -> UntypedTree -> UntypedTree
 mkIf c t e = embed (If c t e)
 
+mkRecEmpty :: UntypedTree
+mkRecEmpty = embed RecEmpty
+
+mkRecExtend :: UntypedTree -> (Name, UntypedTree) -> UntypedTree
+mkRecExtend r l = embed (RecExtend r l)
+
+mkRecSelect :: UntypedTree -> Name -> UntypedTree
+mkRecSelect r l = embed (RecSelect r l)

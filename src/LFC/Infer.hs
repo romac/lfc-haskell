@@ -45,13 +45,15 @@ type Constraint = (Ty, Ty)
 
 type Memo = Map (Cofree TreeF ()) Ty
 
-type Infer a = Eff '[ Reader Env
-                    , Writer (Set Constraint)
-                    , State Memo
-                    , Fresh
-                    , Exc TypeError
-                    ]
-                    a
+type InferEff
+  = '[ Reader Env
+     , Writer (Set Constraint)
+     , State Memo
+     , Fresh
+     , Exc TypeError
+     ]
+
+type Infer = Eff InferEff
 
 type InferResult = Either TypeError
 
@@ -144,3 +146,25 @@ infer = memoizeM infer'
 
           pure ty
 
+        RecEmpty ->
+          pure (tyRecord tyRowEmpty)
+
+        RecExtend r (l, v) -> do
+          tyRec <- infer r
+          tyVal <- infer v
+
+          tyRow <- freshTy
+          tyRec <-> tyRecord tyRow
+
+          pure (tyRecord (tyRowExt tyRec (l, tyVal)))
+
+        RecSelect r l -> do
+          tyRec <- infer r
+          tyRow <- freshTy
+          a     <- freshTy
+          r     <- freshTy
+
+          tyRec <-> tyRecord tyRow
+          tyRow <-> tyRowExt r (l, a)
+
+          pure a

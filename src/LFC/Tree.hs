@@ -29,5 +29,12 @@ data TreeF a
   | If a a a
   | Abs !Name !Ty a
   | App a a
+  | RecEmpty
+  | RecExtend a (Name, a)
+  | RecSelect a !Name
   deriving (Eq, Ord, Show, Read, Functor, Foldable, Traversable, Generic, Typeable)
 
+$(deriveEq1     ''TreeF)
+$(deriveOrd1    ''TreeF)
+$(deriveShow1   ''TreeF)
+$(deriveRead1   ''TreeF)
