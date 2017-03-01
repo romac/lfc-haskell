@@ -8,7 +8,7 @@
 [![Contact](https://img.shields.io/badge/contact-@__romac-blue.svg?style=flat)](https://twitter.com/_romac)
 
 
-> For now this is just me messing around with lambda calculus, recursion schemes, Cofree and extensible effects.
+> An experiment with lambda calculus, recursion schemes, Cofree and extensible effects.
 
 ### Author
 
