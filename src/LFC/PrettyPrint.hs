@@ -8,10 +8,9 @@ module LFC.PrettyPrint
   , ppName
   ) where
 
-import Protolude hiding ((<>))
+import LFC.Prelude
 
 import Control.Comonad.Trans.Cofree
-import Data.Functor.Foldable (cata)
 
 import Text.PrettyPrint.ANSI.Leijen
 

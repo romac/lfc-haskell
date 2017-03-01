@@ -16,10 +16,10 @@ dependencies:
   - containers
   - deriving-compat
   - free
-  - mtl
+  - freer
   - protolude
   - recursion-schemes
-  - transformers
+  - semigroups
 
 default-extensions:
   - NoImplicitPrelude

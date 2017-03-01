@@ -1,5 +1,7 @@
 
 {-# LANGUAGE CPP #-}
+{-# LANGUAGE DataKinds #-}
+{-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE OverloadedStrings #-}
 
@@ -7,22 +9,16 @@ module LFC.Infer
   ( inferType
   ) where
 
-import           Protolude hiding (Constraint, TypeError)
+import           LFC.Prelude
 
-import           Data.Maybe (isJust, fromJust)
-import           Data.List (lookup)
 import qualified Data.Map as Map
 import qualified Data.Set as Set
 
-import           Data.Functor.Foldable     (cata, project)
-import           Data.Functor.Identity
-
 import           Control.Comonad.Cofree (Cofree(..))
-import           Control.Monad.RWS.Strict
 
 import           LFC.Annotate
 import           LFC.Error
-import           LFC.Fresh
+import           LFC.FreshName
 import           LFC.Memoize
 import           LFC.Name
 import           LFC.PrettyPrint
@@ -49,25 +45,24 @@ type Constraint = (Ty, Ty)
 
 type Memo = Map (Cofree TreeF ()) Ty
 
-newtype Infer a
-  = Infer
-    { runInfer :: RWST
-                    Env
-                    (Set Constraint)
-                    Memo
-                    (ExceptT TypeError Fresh)
+type Infer a = Eff '[ Reader Env
+                    , Writer (Set Constraint)
+                    , State Memo
+                    , Fresh
+                    , Exc TypeError
+                    ]
                     a
-  }
-  deriving
-    ( Functor
-    , Applicative
-    , Monad
-    , MonadReader Env
-    , MonadWriter (Set Constraint)
-    , MonadState Memo
-    , MonadError TypeError
-    , MonadFresh
-    )
+
+type InferResult = Either TypeError
+
+runInfer :: Infer a -> InferResult (a, Set Constraint)
+runInfer a = fst <$> run res
+  where
+    writer = runReader a Map.empty
+    state  = runWriter writer
+    fresh  = runState state Map.empty
+    exc    = runFresh' fresh 0
+    res    = runError exc
 
 addConstraint :: Ty -> Ty -> Infer ()
 addConstraint a b = tell (Set.singleton (a, b))
@@ -79,26 +74,25 @@ withBinding :: Infer Ty -> (Name, Ty) -> Infer Ty
 withBinding a (x, ty) = local (Map.insert x ty) a
 
 freshTy :: Infer Ty
-freshTy = tyVar <$> fresh
+freshTy = tyVar <$> freshName
 
-inferType :: UntypedTree -> Either TypeError TypedTree
+inferType :: UntypedTree -> InferResult TypedTree
 inferType tree = do
   (tyTree, cs) <- annotateTree tree
   subst <- solve cs
   pure $ Subst.apply subst <$> tyTree
 
-annotateTree :: UntypedTree -> Either TypeError (TypedTree, (Set Constraint))
-annotateTree tree =
-  let infer' = annotateM' infer tree
-      except = evalRWST (runInfer infer') Map.empty Map.empty
-      fresh  = runExceptT except
-   in runFresh fresh
+annotateTree :: UntypedTree -> InferResult (TypedTree, (Set Constraint))
+annotateTree tree = runInfer (annotateM' infer tree)
+
+getEnv :: Member (Reader Env) r => Eff r Env
+getEnv = ask
 
 infer :: Cofree TreeF () -> Infer Ty
 infer = memoizeM infer'
   where
     infer' (() :< tree) = do
-      env <- ask
+      env <- getEnv
       case tree of
         Tru  -> pure tyBool
         Fals -> pure tyBool
@@ -135,12 +129,11 @@ infer = memoizeM infer'
 
           pure tt
 
-        Abs x ty body -> do
-          env <- ask
-          tp  <- freshTy
-          tp' <- infer body `withBinding` (x, tp)
+        Abs x a body -> do
+          env <- getEnv
+          b <- infer body `withBinding` (x, a)
 
-          pure (tyFun tp tp')
+          pure (tyFun a b)
 
         App f x -> do
           tf <- infer f

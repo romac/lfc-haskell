@@ -32,18 +32,19 @@ library
     , containers
     , deriving-compat
     , free
-    , mtl
+    , freer
     , protolude
     , recursion-schemes
-    , transformers
+    , semigroups
   exposed-modules:
       LFC.Annotate
       LFC.Error
       LFC.Example
-      LFC.Fresh
+      LFC.FreshName
       LFC.Infer
       LFC.Memoize
       LFC.Name
+      LFC.Prelude
       LFC.PrettyPrint
       LFC.Subst
       LFC.Tree

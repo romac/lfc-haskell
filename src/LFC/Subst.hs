@@ -2,11 +2,9 @@
 
 module LFC.Subst where
 
-import           Protolude hiding (empty)
+import           LFC.Prelude hiding (empty)
 
 import qualified Data.Map.Strict as Map
-
-import           Data.Functor.Foldable (cata, embed)
 
 import           LFC.Name
 import           LFC.Ty

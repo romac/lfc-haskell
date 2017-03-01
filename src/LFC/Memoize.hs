@@ -3,24 +3,24 @@
 
 module LFC.Memoize where
 
-import           Protolude
+import           LFC.Prelude
 import qualified Data.Map as Map
 
-memoizeM :: (Ord a, MonadState (Map a b) m)
-          => (a -> m b)
-          -> a
-          -> m b
+memoizeM :: (Ord a, Member (State (Map a b)) r)
+         => (a -> Eff r b)
+         -> a
+         -> Eff r b
 memoizeM = memoizeM' identity const
 
-memoizeM' :: (Ord a, MonadState s m)
+memoizeM' :: (Ord a, Member (State s) r)
           => (s -> Map a b)
           -> (Map a b -> s -> s)
-          -> (a -> m b)
+          -> (a -> Eff r b)
           -> a
-          -> m b
+          -> Eff r b
 memoizeM' getMemo setMemo f a = do
-  cached <- Map.lookup a <$> gets getMemo
-  case cached of
+  s <- gets getMemo
+  case Map.lookup a s of
     Just b  -> pure b
     Nothing -> do
       b <- f a

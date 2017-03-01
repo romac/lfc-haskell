@@ -4,7 +4,8 @@ resolver: lts-8.0
 packages:
   - '.'
 
-extra-deps: []
+extra-deps:
+  - freer-0.2.4.1
 
 flags: {}
 
